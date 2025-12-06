@@ -1,0 +1,14 @@
+[
+  {
+    "id": "default",
+    "name": "Default Assistant",
+    "prompt": "You are a helpful assistant.",
+    "isDefault": true
+  },
+  {
+    "id": "research",
+    "name": "Research Helper",
+    "prompt": "You are a research assistant. Be thorough and cite your reasoning.",
+    "isDefault": false
+  }
+]

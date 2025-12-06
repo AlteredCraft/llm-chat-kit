@@ -1,0 +1,32 @@
+{
+  "name": "llm-chat-kit",
+  "version": "0.1.0",
+  "description": "A lightweight, reusable LLM chat interface for research projects",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run build:client && bun run --watch src/server/index.ts",
+    "build": "bun run build:client && bun run build:server",
+    "build:client": "bun build src/client/index.ts --outdir dist/client --minify && cp src/client/index.html dist/client/ && cp -r src/client/styles dist/client/",
+    "build:server": "bun build src/server/index.ts --outdir dist/server --target bun",
+    "start": "bun run dist/server/index.js",
+    "test": "bun test --coverage tests",
+    "test:unit": "bun test --coverage tests/unit",
+    "test:integ": "bun test --coverage tests/integ",
+    "test:watch": "bun test tests/unit --watch"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.2.0",
+    "@ai-sdk/google": "^1.2.0",
+    "@ai-sdk/openai": "^1.2.0",
+    "ai": "^5.0.0",
+    "hono": "^4.10.0",
+    "lit": "^3.3.0",
+    "ollama-ai-provider-v2": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "license": "MIT",
+  "author": "Altered Craft"
+}
