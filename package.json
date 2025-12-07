@@ -4,9 +4,10 @@
   "description": "A lightweight, reusable LLM chat interface for research projects",
   "type": "module",
   "scripts": {
-    "dev": "bun run build:client && bun run --watch src/server/index.ts",
+    "dev": "vite --config vite.config.ts",
+    "dev:server": "bun run --watch src/server/index.ts",
     "build": "bun run build:client && bun run build:server",
-    "build:client": "bun build src/client/index.ts --outdir dist/client --minify && cp src/client/index.html dist/client/ && cp -r src/client/styles dist/client/",
+    "build:client": "vite build --config vite.config.ts",
     "build:server": "bun build src/server/index.ts --outdir dist/server --target bun",
     "start": "bun run dist/server/index.js",
     "test": "bun test --coverage tests",
@@ -20,12 +21,17 @@
     "@ai-sdk/openai": "^1.2.0",
     "ai": "^5.0.0",
     "hono": "^4.10.0",
-    "lit": "^3.3.0",
-    "ollama-ai-provider-v2": "^1.5.0"
+    "ollama-ai-provider-v2": "^1.5.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5.0.0"
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "typescript": "^5.0.0",
+    "vite": "7.2.6"
   },
   "license": "MIT",
   "author": "Altered Craft"

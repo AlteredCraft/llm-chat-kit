@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 bun install              # Install dependencies
-bun run dev              # Build client + start server with watch mode
+bun run dev              # Start Vite dev server (client)
+bun run dev:server       # Start Bun server with watch mode
 bun run build            # Build client and server for production
 bun run test             # Run all tests with coverage
 bun run test:unit        # Unit tests only
@@ -24,7 +25,7 @@ bun test tests/unit/startup.test.ts
 This is a lightweight LLM chat UI using a **thin proxy pattern**:
 
 ```
-Browser (Lit Web Components)
+Browser (React + Vite)
     │
     │ HTTP/SSE
     ▼
@@ -53,10 +54,10 @@ LLM Providers (OpenAI, Anthropic, Google, Ollama)
 
 ### Client (`src/client/`)
 
-Lit Web Components hierarchy:
-- `chat-app.ts` - Root layout, holds settings state
-- `chat-view.ts` - Message list + input, handles streaming
-- `settings-panel.ts` - Sidebar with provider/model/params/prompts
+React functional components (built with Vite):
+- `ChatApp.tsx` - Root layout, holds settings state
+- `ChatView.tsx` - Message list + input, handles streaming
+- `SettingsPanel.tsx` - Sidebar with provider/model/params/prompts
 
 ### Configuration
 

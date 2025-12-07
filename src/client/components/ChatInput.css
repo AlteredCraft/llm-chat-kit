@@ -1,0 +1,53 @@
+.chat-input__container {
+    display: flex;
+    gap: var(--space-sm);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--space-sm);
+    background: var(--color-bg);
+}
+
+.chat-input__container textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.5;
+    min-height: 1.5em;
+    max-height: 10em;
+    background: transparent;
+    color: var(--color-fg);
+}
+
+.chat-input__container textarea::placeholder {
+    color: var(--color-muted);
+}
+
+.chat-input__container button {
+    padding: var(--space-sm) var(--space-md);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    transition: background 0.15s;
+}
+
+.chat-input__container button:hover:not(:disabled) {
+    background: var(--color-user-bg);
+}
+
+.chat-input__container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-input__hint {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin-top: var(--space-xs);
+}

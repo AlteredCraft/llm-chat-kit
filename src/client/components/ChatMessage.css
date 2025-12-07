@@ -1,0 +1,30 @@
+.chat-message {
+  margin: var(--space-sm) 0;
+}
+
+.chat-message__role {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chat-message__content {
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.chat-message__content--user {
+  background: var(--color-user-bg);
+  margin-left: var(--space-lg);
+}
+
+.chat-message__content--assistant {
+  background: var(--color-assistant-bg);
+  margin-right: var(--space-lg);
+}

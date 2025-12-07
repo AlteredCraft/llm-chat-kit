@@ -1,0 +1,31 @@
+.param-controls__field {
+    margin-bottom: var(--space-md);
+}
+
+.param-controls__field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    margin-bottom: var(--space-xs);
+    color: var(--color-fg);
+}
+
+.param-controls__value {
+    font-family: monospace;
+    color: var(--color-muted);
+}
+
+.param-controls__field input[type='range'] {
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.param-controls__range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin-top: var(--space-xs);
+}

@@ -1,0 +1,78 @@
+import React from 'react';
+import type { Prompt } from '../services/api';
+import type { Settings } from '../services/storage';
+import { ProviderSelect } from './ProviderSelect';
+import { ParamControls } from './ParamControls';
+import { PromptManager } from './PromptManager';
+import './SettingsPanel.css';
+
+type ProviderName = 'openai' | 'anthropic' | 'google' | 'ollama';
+
+interface SettingsPanelProps {
+    settings: Settings;
+    prompts: Prompt[];
+    activePromptId: string;
+    onClose: () => void;
+    onSettingsChange: (updates: Partial<Settings>) => void;
+    onPromptSelected: (promptId: string) => void;
+    onPromptCreated: (prompt: Prompt) => void;
+    onPromptUpdated: (prompt: Prompt) => void;
+    onPromptDeleted: (promptId: string) => void;
+}
+
+export function SettingsPanel({
+    settings,
+    prompts,
+    activePromptId,
+    onClose,
+    onSettingsChange,
+    onPromptSelected,
+    onPromptCreated,
+    onPromptUpdated,
+    onPromptDeleted,
+}: SettingsPanelProps) {
+    return (
+        <div className="settings-panel">
+            <div className="settings-panel__header">
+                <span className="settings-panel__title">Settings</span>
+                <button className="settings-panel__close-btn" onClick={onClose}>
+                    ×
+                </button>
+            </div>
+
+            <div className="settings-panel__content">
+                <div className="settings-panel__section">
+                    <div className="settings-panel__section-title">Provider</div>
+                    <ProviderSelect
+                        provider={(settings?.provider || 'ollama') as ProviderName}
+                        model={settings?.model || ''}
+                        onProviderChange={(provider) => onSettingsChange({ provider })}
+                        onModelChange={(model) => onSettingsChange({ model })}
+                    />
+                </div>
+
+                <div className="settings-panel__section">
+                    <div className="settings-panel__section-title">Parameters</div>
+                    <ParamControls
+                        temperature={settings?.temperature || 0.7}
+                        maxTokens={settings?.maxTokens || 2048}
+                        onTemperatureChange={(temperature) => onSettingsChange({ temperature })}
+                        onMaxTokensChange={(maxTokens) => onSettingsChange({ maxTokens })}
+                    />
+                </div>
+
+                <div className="settings-panel__section">
+                    <div className="settings-panel__section-title">System Prompt</div>
+                    <PromptManager
+                        prompts={prompts}
+                        activePromptId={activePromptId}
+                        onPromptSelected={onPromptSelected}
+                        onPromptCreated={onPromptCreated}
+                        onPromptUpdated={onPromptUpdated}
+                        onPromptDeleted={onPromptDeleted}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
