@@ -10,6 +10,12 @@
   letter-spacing: 0.05em;
 }
 
+.chat-message__model {
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .chat-message__content {
   padding: var(--space-sm) var(--space-md);
   border: var(--border-width) solid var(--color-border);

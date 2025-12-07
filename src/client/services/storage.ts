@@ -15,7 +15,8 @@ export interface Conversation {
   messages: Array<{
     role: 'user' | 'assistant' | 'system';
     content: string;
-    timestamp: number;
+    timestamp?: number;
+    model?: string;
   }>;
   updatedAt: number;
 }

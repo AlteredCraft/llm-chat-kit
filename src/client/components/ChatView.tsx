@@ -29,7 +29,10 @@ export function ChatView({
     useEffect(() => {
         const saved = storage.getConversation();
         if (saved) {
-            setMessages(saved.messages);
+            setMessages(saved.messages.map(m => ({
+                ...m,
+                timestamp: m.timestamp || Date.now()
+            })));
         }
     }, []);
 
@@ -63,6 +66,7 @@ export function ChatView({
                 role: 'assistant',
                 content: '',
                 timestamp: Date.now() + 1,
+                model,
             };
 
             const newMessages = [...messages, userMessage, assistantMessage];
@@ -144,9 +148,9 @@ export function ChatView({
                 {messages.length === 0 ? (
                     <div className="chat-view__empty">Start a conversation</div>
                 ) : (
-                    messages.map((m, i) => (
-                        <ChatMessage key={`${m.role}-${m.timestamp}-${i}`} role={m.role as 'user' | 'assistant'} content={m.content} />
-                    ))
+                     messages.map((m, i) => (
+                         <ChatMessage key={`${m.role}-${m.timestamp}-${i}`} role={m.role as 'user' | 'assistant'} content={m.content} model={m.model} />
+                     ))
                 )}
                 {isStreaming && (
                     <div className="chat-view__streaming-indicator">
