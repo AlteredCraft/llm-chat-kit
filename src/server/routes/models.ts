@@ -51,9 +51,10 @@ modelsRoute.get('/:provider', async (c) => {
     }
   }
 
-  // For other providers, return unsupported with docs link
+  // For other providers, return static models from config
   return c.json({
-    supported: false,
+    supported: true,
+    models: config?.models || [],
     docsUrl: config?.docsUrl || null,
   });
 });

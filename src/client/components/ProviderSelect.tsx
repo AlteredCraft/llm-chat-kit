@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { modelsApi, providersApi, type ProviderInfo } from '../services/api';
 import './ProviderSelect.css';
 
@@ -18,19 +18,20 @@ export function ProviderSelect({
     onModelChange,
 }: ProviderSelectProps) {
     const [providers, setProviders] = useState<ProviderInfo[]>([]);
-    const [ollamaModels, setOllamaModels] = useState<string[]>([]);
+    const [models, setModels] = useState<string[]>([]);
     const [loadingModels, setLoadingModels] = useState(false);
     const [loadingProviders, setLoadingProviders] = useState(true);
     const [modelError, setModelError] = useState<string | null>(null);
+    const [docsUrl, setDocsUrl] = useState<string | null>(null);
 
+    // Load providers on mount
     useEffect(() => {
         loadProviders();
     }, []);
 
+    // Load models whenever provider changes
     useEffect(() => {
-        if (provider === 'ollama') {
-            loadOllamaModels();
-        }
+        loadModels(provider);
     }, [provider]);
 
     async function loadProviders() {
@@ -50,14 +51,21 @@ export function ProviderSelect({
         }
     }
 
-    async function loadOllamaModels() {
+    async function loadModels(targetProvider: ProviderName) {
         setLoadingModels(true);
         setModelError(null);
+        setModels([]);
 
         try {
-            const result = await modelsApi.getModels('ollama');
+            const result = await modelsApi.getModels(targetProvider);
+            setDocsUrl(result.docsUrl || null);
+
             if (result.supported && result.models) {
-                setOllamaModels(result.models);
+                setModels(result.models);
+                // Auto-select first model if current model is empty or not in list
+                if (result.models.length > 0 && (!model || !result.models.includes(model))) {
+                    onModelChange(result.models[0]);
+                }
                 if (result.error) {
                     setModelError(result.error);
                 }
@@ -69,18 +77,17 @@ export function ProviderSelect({
         }
     }
 
-    function getDocsUrl(): string | null {
-        const p = providers.find((p) => p.name === provider);
-        return p?.docsUrl || null;
-    }
+    const handleProviderChange = useCallback((newProvider: ProviderName) => {
+        // Clear model when switching providers
+        onModelChange('');
+        onProviderChange(newProvider);
+    }, [onProviderChange, onModelChange]);
 
     if (loadingProviders) {
         return <div className="provider-select__loading">Loading providers...</div>;
     }
 
     const enabledProviders = providers.map((p) => p.name as ProviderName);
-    const docsUrl = getDocsUrl();
-    const isOllama = provider === 'ollama';
 
     if (enabledProviders.length === 0) {
         return (
@@ -97,7 +104,7 @@ export function ProviderSelect({
                 <select
                     id="provider"
                     value={provider}
-                    onChange={(e) => onProviderChange(e.target.value as ProviderName)}
+                    onChange={(e) => handleProviderChange(e.target.value as ProviderName)}
                 >
                     {enabledProviders.map((p) => (
                         <option key={p} value={p}>
@@ -109,37 +116,26 @@ export function ProviderSelect({
 
             <div className="provider-select__field">
                 <label htmlFor="model">Model</label>
-                {isOllama ? (
-                    <>
-                        <select
-                            id="model"
-                            value={model}
-                            onChange={(e) => onModelChange(e.target.value)}
-                        >
-                            {ollamaModels.map((m) => (
-                                <option key={m} value={m}>
-                                    {m}
-                                </option>
-                            ))}
-                            {ollamaModels.length === 0 && !loadingModels && (
-                                <option value="">No models found</option>
-                            )}
-                        </select>
-                        {loadingModels && (
-                            <div className="provider-select__loading">Loading models...</div>
-                        )}
-                        {modelError && (
-                            <div className="provider-select__error">{modelError}</div>
-                        )}
-                    </>
-                ) : (
-                    <input
-                        id="model"
-                        type="text"
-                        value={model}
-                        onChange={(e) => onModelChange(e.target.value)}
-                        placeholder="Enter model ID"
-                    />
+                <select
+                    id="model"
+                    value={model}
+                    onChange={(e) => onModelChange(e.target.value)}
+                    disabled={loadingModels || models.length === 0}
+                >
+                    {models.map((m) => (
+                        <option key={m} value={m}>
+                            {m}
+                        </option>
+                    ))}
+                    {models.length === 0 && !loadingModels && (
+                        <option value="">No models available</option>
+                    )}
+                </select>
+                {loadingModels && (
+                    <div className="provider-select__loading">Loading models...</div>
+                )}
+                {modelError && (
+                    <div className="provider-select__error">{modelError}</div>
                 )}
                 {docsUrl && (
                     <a
