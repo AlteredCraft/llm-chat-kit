@@ -8,12 +8,12 @@ export default {
     anthropic: {
       keyName: 'ANTHROPIC_API_KEY',
       docsUrl: 'https://docs.anthropic.com/en/docs/about-claude/models',
-      models: ['claude-sonnet-4-20250514', 'claude-3-5-haiku-20241022', 'claude-3-opus-20240229']
+      models: ['claude-sonnet-4-5', 'claude-haiku-4-5', 'claude-opus-4-5']
     },
     google: {
       keyName: 'GOOGLE_GENERATIVE_AI_API_KEY',
       docsUrl: 'https://ai.google.dev/gemini-api/docs/models',
-      models: ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash']
+      models: ['gemini-3-pro-preview', 'gemini-2.5-flash', 'gemini-2.5-flash-preview-09-2025', 'gemini-2.5-flash-lite-preview-09-2025']
     },
     ollama: {
       // No API key required - local server

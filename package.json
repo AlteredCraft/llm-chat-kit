@@ -16,14 +16,15 @@
     "test:watch": "bun test tests/unit --watch"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.2.0",
-    "@ai-sdk/google": "^1.2.0",
-    "@ai-sdk/openai": "^1.2.0",
+    "@ai-sdk/anthropic": "^2.0.0",
+    "@ai-sdk/google": "^2.0.0",
+    "@ai-sdk/openai": "^2.0.0",
     "ai": "^5.0.0",
     "hono": "^4.10.0",
     "ollama-ai-provider-v2": "^1.5.0",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@types/bun": "latest",

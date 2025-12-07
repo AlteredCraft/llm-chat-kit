@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
+// @ts-ignore
 import config from '../../../config/providers.config.js';
 
 export interface StartupCheck {
@@ -109,15 +110,17 @@ export function checkProviders(env: Record<string, string | undefined> = process
   for (const [name, providerConfig] of Object.entries(config.providers)) {
     if (!providerConfig) continue;
 
+    const config = providerConfig as any;
+    
     // Ollama has no keyName - always show as available
-    if (providerConfig.keyName === null) {
-      const baseUrl = providerConfig.baseUrl || 'http://localhost:11434';
+    if (config.keyName === null) {
+      const baseUrl = config.baseUrl || 'http://localhost:11434';
       checks.push({
         name: name.charAt(0).toUpperCase() + name.slice(1),
         status: 'ok',
         message: `Available at ${baseUrl}`,
       });
-    } else if (env[providerConfig.keyName]) {
+    } else if (env[config.keyName]) {
       checks.push({
         name: name.charAt(0).toUpperCase() + name.slice(1),
         status: 'ok',

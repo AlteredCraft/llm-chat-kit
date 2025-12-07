@@ -29,11 +29,11 @@ chatRoute.post('/', async (c) => {
     const modelInstance = getModel(provider, model);
 
     // Stream the response
-    const result = await streamText({
+    const result = streamText({
       model: modelInstance,
       messages,
       temperature,
-      maxTokens,
+      maxOutputTokens: maxTokens,
     });
 
     // Return as text stream response
