@@ -25,8 +25,10 @@ bun run dev:server
 bun run dev
 
 # OR use helper scripts (single terminal)
-./restart-dev.sh    # Restart both servers (idempotent)
-./status-dev.sh      # Check server status
+./restart-dev.sh           # Restart both servers (idempotent)
+./restart-dev.sh --stop    # Stop all servers
+./restart-dev.sh --help    # Show usage information
+./status-dev.sh            # Check server status
 ```
 
 Open http://localhost:5173 in your browser (Vite dev server).

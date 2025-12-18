@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Helper script to restart both server and client idempotently
-# Usage: ./restart-dev.sh
+# Usage: ./restart-dev.sh [--stop]
+#   --stop: Stop all development servers and exit
 
 set -e
 
@@ -155,36 +156,91 @@ show_status() {
     echo ""
 }
 
-# Main script logic
-main() {
-    echo "🔄 Development Server Restart Script"
-    echo "====================================="
-    
-    # Show current status
-    show_status
-    
-    # Stop existing processes
-    stop_processes
-    
-    # Start new processes
-    start_processes
-    
-    # Show final status
+# Function to show help
+show_help() {
+    echo "Development Server Management Script"
+    echo "===================================="
     echo ""
-    print_success "Development servers restarted successfully!"
-    show_status
-    
+    echo "Usage: ./restart-dev.sh [OPTION]"
     echo ""
-    print_status "Log files:"
+    echo "Options:"
+    echo "  --stop    Stop all development servers and exit"
+    echo "  --help    Show this help message"
+    echo ""
+    echo "Default behavior (no arguments):"
+    echo "  - Stop existing servers"
+    echo "  - Start new server and client instances"
+    echo ""
+    echo "Server URLs:"
+    echo "  - Server API: http://localhost:3000"
+    echo "  - Client App: http://localhost:5173"
+    echo ""
+    echo "Log files:"
     echo "  - Server: server.log"
     echo "  - Client: client.log"
-    echo ""
-    print_status "To stop servers manually, run:"
-    echo "  pkill -f 'bun.*dev'"
-    echo ""
-    print_status "To view logs, run:"
-    echo "  tail -f server.log  # Server logs"
-    echo "  tail -f client.log  # Client logs"
+}
+
+# Main script logic
+main() {
+    # Parse command line arguments
+    case "${1:-}" in
+        --help|-h)
+            show_help
+            exit 0
+            ;;
+        --stop)
+            echo "🛑 Development Server Stop Script"
+            echo "=================================="
+            
+            # Show current status
+            show_status
+            
+            # Stop existing processes
+            stop_processes
+            
+            echo ""
+            print_success "All development servers stopped!"
+            show_status
+            exit 0
+            ;;
+        "")
+            # Default behavior - restart
+            echo "🔄 Development Server Restart Script"
+            echo "====================================="
+            
+            # Show current status
+            show_status
+            
+            # Stop existing processes
+            stop_processes
+            
+            # Start new processes
+            start_processes
+            
+            # Show final status
+            echo ""
+            print_success "Development servers restarted successfully!"
+            show_status
+            
+            echo ""
+            print_status "Log files:"
+            echo "  - Server: server.log"
+            echo "  - Client: client.log"
+            echo ""
+            print_status "To stop servers manually, run:"
+            echo "  pkill -f 'bun.*dev'"
+            echo ""
+            print_status "To view logs, run:"
+            echo "  tail -f server.log  # Server logs"
+            echo "  tail -f client.log  # Client logs"
+            ;;
+        *)
+            print_error "Unknown option: $1"
+            echo ""
+            show_help
+            exit 1
+            ;;
+    esac
 }
 
 # Handle script interruption
